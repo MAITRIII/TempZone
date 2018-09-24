@@ -1,0 +1,458 @@
+<?php 
+/*---------------------------------------------------------------------------------------*/
+/*   Author       : Ankit Dedhia                                                */
+/*   Date         : Oct 2013                                                 */
+/*   Synopsis     : Code for
+					1)View for Left Menu											*/
+/*   Code Modifications:                                                             */
+/*----------------------------------------------------------------------------------------*/
+
+
+
+?>
+
+<?php
+//$sql="SELECT * FROM appdet ad independent_mst im config_relationship cr where ad.FunctionID = im.MasterID AND im.MasterID = cr.source_entity AND cr.mapping_type='menu' AND ";
+//$query=mysql_query($sql or die(mysql_error()));
+//$result = mysql_fetch_array($query);
+?>
+
+				
+<div class="span2 main-menu-span">
+    <div class="well nav-collapse sidebar-nav">
+     <ul class="nav nav-tabs nav-stacked main-menu">
+      <li class="nav-header hidden-tablet">Mf2</li>
+<!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx DashBoard xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
+		<?php
+       
+		
+			 $sql1="SELECT Count(*) total_rows FROM appdet ad, independent_mst im, config_relationship cr where ad.FunctionID = im.MasterID AND im.MasterID = 			cr.source_entity AND cr.mapping_type='menu' AND im.MasterID = 22 And Enabled=1";
+		
+		
+		//$query1=mysql_query($sql1 );
+		//$num_rows=mysql_num_rows($query1);
+		
+		//if($num_rows>0)
+		//{
+			//echo "a";	
+		//}
+		//$row = mysql_fetch_array($query1);
+		/*xxxxxxxxxxxxxxxxxxxxxx MENU ID : Starts  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+		$lvn_commonTypeID='330';
+		$lvn_indMstID='331';
+		$lvn_configMppgID='332';
+		$lvn_entityObjID='333';
+		$lvn_entityObjAttrbtID='350';
+		$lvn_entityObjAttrbtMppngID='334';
+		$lvn_entityObjTmpID='335';
+		$lvn_objMppngID='336';
+		$lvn_expceptionLogID='337';
+		$lvn_appDetID='338';
+		$lvn_hierLvlID='339';
+		$lvn_currency='295';
+		$luv_currencyrate='298';
+		$lvn_relDetID='340';
+		$lvn_sysGlossID='341';
+		$lvn_sysLstDetID='342';
+		$lvn_roleMstID='343';
+		$lvn_userDomainID='344';
+		$lvn_userGrpID='345';
+		$lvn_userGrpRoleID='346';
+		$lvn_userMstID='347';
+		$lvn_userRoleID='348';
+		$lvn_permissionDetID='349';
+		$lvn_testMenuID='352';
+		function get_menu_name($masterId)
+		{
+			$result=mysql_query("SELECT * FROM independent_mst where  MasterID =  ".$masterId);
+			$row=mysql_fetch_array($result);
+			return $row['MasterName'];
+		}
+		/*xxxxxxxxxxxxxxxxxxxxxx MENU ID : Ends  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+
+		/*xxxxxxxxxxxxxxxxxxxxxx Module ID : Starts  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+		
+		$lvn_currency='295';
+		$luv_currencyrate='298';
+		$lvn_commonTypeModule='308';
+		$lvn_indMstModule='309';
+		$lvn_configMppgModule='310';
+		$lvn_entityObjModule='312';
+		$lvn_entityObjAttrbtModule='313';
+		$lvn_entityObjAttrbtMppngModule='314';
+		$lvn_entityObjTmpModule='315';
+		$lvn_objMppngModule='316';
+		$lvn_expceptionLogModule='317';
+		$lvn_appDetModule='318';
+		$lvn_hierLvlModule='320';
+		
+		$lvn_relDetModule='321';
+		$lvn_sysGlossModule='322';
+		$lvn_sysLstDetModule='323';
+		$lvn_roleMstModule='324';
+		$lvn_userDomainModule='325';
+		$lvn_userGrpModule='326';
+		$lvn_userGrpRoleModule='327';
+		$lvn_userMstModule='328';
+		$lvn_userRoleModule='329';
+		$lvn_permissionDetModule='319';
+		$lvn_testModule='351';
+		
+		
+			/*xxxxxxxxxxxxxxxxxxxxxx Module ID : ends  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx*/
+	
+		function moduleEnableDisable($moduleID)
+		{
+			$result=mysql_query("SELECT * FROM application_details ad, independent_mst im, config_mapping_dtl cr where ad.FunctionID = im.MasterID AND im.MasterID = cr.SRC_ENTTY_ID AND cr.CNFG_MPPNG_TYP_ID=62 And Enabled=1  AND im.MasterID = ".$moduleID);
+			$num_rows=mysql_num_rows($result);
+			if($num_rows>0)
+			{
+				return true;	
+			}
+		}
+        ?>
+      
+							<li>
+                                <a class="ajax-link" href="<?php echo site_url('dashboard/dashboard');?>">
+                                    <i class="icon-home"></i>
+                                    <span class="hidden-tablet">Dashboard</span>
+                                </a>
+                            </li>
+                            <?php if(moduleEnableDisable($lvn_commonTypeModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('common/common_type');?>">
+                                    <i class="icon-home"></i>
+                                    <span class="hidden-tablet"> <?php echo get_menu_name($lvn_commonTypeID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_indMstModule))
+							{
+								
+							?>
+                        	<li>
+                                <a class="ajax-link" href="<?php echo site_url('common/indp_mst_data');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"> <?php echo get_menu_name($lvn_indMstID); ?></span>
+                                </a>
+                            </li> 
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_configMppgModule))
+							{
+								
+							?>
+                            
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('common/config_mapping_dtl');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_configMppgID); ?></span>
+                                </a>
+                            </li> 
+							<?php  
+							}
+						   ?>
+							<?php //if(moduleEnableDisable($lvn_vendorModule))
+							//{
+								
+							?>
+                             <li>
+                                <a class="ajax-link" href="<?php echo site_url('crncyMngt/currency_mst/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet">Currency Master <?php //echo get_menu_name($lvn_dashboardID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							//}
+						   ?>
+							<?php //if(moduleEnableDisable($lvn_vendorModule))
+							//{
+								
+							?>
+                            
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('crncyMngt/currency_rate/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet">Currency Rate<?php //echo get_menu_name($lvn_dashboardID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							//}
+						   ?>
+							
+							<li class="nav-header hidden-tablet">Entity</li>
+                            <?php if(moduleEnableDisable($lvn_entityObjModule))
+							{
+								
+							?>
+							<li>
+                                <a class="ajax-link" href="<?php echo site_url('entity/entity_obj/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"> <?php echo get_menu_name($lvn_entityObjID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_entityObjAttrbtModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('entity/entity_obj_attrbt/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_entityObjAttrbtID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_entityObjAttrbtMppngModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('entity/entity_obj_attrbt_mppng/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_entityObjAttrbtMppngID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_entityObjTmpModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('entity/entity_obj_tmp/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_entityObjTmpID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_objMppngModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('entity/obj_mppng/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_objMppngID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							
+                            <li class="nav-header hidden-tablet">General</li>
+							<?php if(moduleEnableDisable($lvn_expceptionLogModule))
+							{
+								
+							?>
+							<li>
+                                <a class="ajax-link" href="<?php echo site_url('excptnMngt/exception_log/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_expceptionLogID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_appDetModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('hrchyMngt/application_dtl/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_appDetID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_hierLvlModule))
+							{
+								
+							?>
+                             
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('hrchyMngt/hier_lvl_config/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_hierLvlID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_relDetModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('hrchyMngt/relationship_dtl/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_relDetID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_sysGlossModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('systmInfoMgr/systm_glssry/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_sysGlossID); ?></span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_sysLstDetModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('systmInfoMgr/systm_lst_dtls/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_sysLstDetID); ?> </span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							
+                       
+							<li class="nav-header hidden-tablet">User Management</li>
+                           
+							<?php if(moduleEnableDisable($lvn_roleMstModule))
+							{
+								
+							?>
+							<li>
+                                <a class="ajax-link" href="<?php echo site_url('user/role_master/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_roleMstID); ?></span>
+                                </a>
+                            </li>
+                          <?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_userDomainModule))
+							{
+								
+							?>  
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('user/user_domain/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_userDomainID); ?> </span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_userGrpModule))
+							{
+								
+							?>
+                            
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('user/user_group/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_userGrpID); ?> </span>
+                                </a>
+                            </li>
+							<?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_userGrpRoleModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('user/user_group_role/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_userGrpRoleID); ?> </span>
+                                </a>
+                            </li>
+                            <?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_userMstModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('user/user_master/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_userMstID); ?> </span>
+                                </a>
+                            </li>
+                            <?php  
+							}
+						   ?>
+							<?php if(moduleEnableDisable($lvn_userRoleModule))
+							{
+								
+							?>
+                            <li>
+                                <a class="ajax-link" href="<?php echo site_url('user/user_role/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_userRoleID); ?> </span>
+                                </a>
+                            </li> 
+							<?php  
+							}
+						   ?>
+							
+							<li class="nav-header hidden-tablet">User Access</li>
+							<?php if(moduleEnableDisable($lvn_permissionDetModule))
+							{
+								
+							?>
+							 <li>
+                            	<a class="ajax-link" href="<?php echo site_url('user/permission_dtl/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_permissionDetID); ?> </span>
+                                </a>
+                            </li>  
+							<?php  
+							}
+						   ?>
+							
+
+							
+							<?php if(moduleEnableDisable($lvn_testModule))
+							{
+								
+							?>
+							 <li>
+                            	<a class="ajax-link" href="<?php echo site_url('user/permission_dtl/');?>">
+                                    <i class="icon-plus-sign"></i>
+                                    <span class="hidden-tablet"><?php echo get_menu_name($lvn_testMenuID); ?> </span>
+                                </a>
+                            </li>  
+							<?php  
+							}
+						   ?>
+							
+
+     </ul>
+     <label id="for-is-ajax" class="hidden-tablet" for="is-ajax" style="display:none"><input id="is-ajax" type="checkbox" checked="checked" style="display:none"> Ajax on menu</label>
+    </div><!--/.well -->
+            </div><!--/span-->
+            <!-- left menu ends -->
+			<div id="content" class="span10">
+		

@@ -1,0 +1,202 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class TimezoneMst extends CI_Controller {
+	
+	//start variables
+	 
+	private $gvn_timezoneId;
+	private $gvs_timezone;
+	private $gvs_country;
+
+
+	//end variables
+	
+	private $actionMode; //used to set mode
+	// 0 -> for add
+	// 1 -> for editHeirLevelConfig
+	
+	public function __construct() {
+		parent::__construct(); //call parent constructor
+		
+		//$this->output->enable_profiler(TRUE); //profiler for debugging	
+			
+		//start load models, helpers, libraries, etc
+		$this->load->model('address/timezone_mst_m');
+		//$this->load->model('common/indp_mst_data_m');
+		//$this->is_logged_in();
+		
+		//start load models, helpers, libraries, etc
+		
+		//start constructor code
+		//constructor code here
+		//end constructor code
+	}
+	
+	public function index() {
+		$head['title'] = 'TimeZone Master';	
+		
+		$data['tzone'] 		= $this->timezone_mst_m->getAllTimeZoneMst();
+		$template['header']   = $this->load->view('include/header_v', $head);
+		$template['menu']     = $this->load->view('include/left_menu_v', true);
+		$template['body']     = $this->load->view('address/timezoneMst_v', $data);
+		$template['footer']   = $this->load->view('include/footer_v', true);
+		$this->load->view('include/main_page_v', $template);
+
+	}
+	
+////////////////////////Employee
+	public function initForm($id){
+		
+
+		//start of setting initial values for insert mode 
+		if(!$id){
+			$head['title']		 = 'New Time Zone';	
+			$data['title'] 		 = 'New Time Zone';		
+			$data['action'] 		= site_url('address/timezoneMst/insert');
+			$data['id']	 		= null;
+			$data['Timezone']	  = null;	
+			$data['country']  = null;	
+
+		}
+		//end of setting initial values for insert mode 
+		
+		
+		//start of setting initial values for update mode 
+		if($id){
+			$head['title'] 		 = 'Edit Time Zone';	
+			$data['title'] 		 = 'Edit Time Zone';		
+			$data['action']	    = site_url('address/timezoneMst/update');		
+			$data['id'] 			= $id;
+			$data['Timezone']  	  = $this->timezone_mst_m->getTimeZone($id);
+			$data['country']  	  = $this->timezone_mst_m->getcountry($id);		
+			
+		}
+		
+		//end of setting initial values for update mode 
+		//$loctypeId = LOCZONETYPE;	
+		//$data['tzId_dropdown'] = $this->indp_mst_data_m->getAllIndMstDetailsByTypeId($loctypeId)->result();		
+		//start of setting initial values for both insert and update mode		
+		$template['header'] = $this->load->view('include/header_v', $head);
+		$template['menu'] = $this->load->view('include/left_menu_v', true);
+		$template['body'] = $this->load->view('address/viewtimezoneMst_v', $data);
+		$template['footer'] = $this->load->view('include/footer_v', true);
+		$this->load->view('include/main_page_v', $template);
+		//end of setting initial values for both insert and update mode 
+	}
+	
+	public function setFormControls(){
+		
+		//start of setting rules for insert mode 
+		if($this->actionMode==0){
+			//enter insert rules here
+		}
+		//end of setting rules for insert mode 
+		
+		//start of setting rules for update mode 
+		if($this->actionMode==1){
+			$this->gvn_timezoneId = $this->input->post('id');
+			
+		}
+		//end of setting rules for update mode 
+		
+		//start of setting rules for both insert and update mode 
+			$this->gvs_timezone	   = $this->input->post('Timezone');
+			$this->gvs_country	   = $this->input->post('country');
+        //end of setting rules for both insert and update mode 
+		
+		
+		if($this->actionMode==0){
+			$this->timezone_mst_m->insert($this->gvs_timezone,$this->gvs_country);
+		} else {
+			$this->timezone_mst_m->update($this->gvn_timezoneId, $this->gvs_timezone,$this->gvs_country);
+		}
+	}
+	
+	public function setFormValidationRules(){
+		//start of setting rules for insert mode 
+		if($this->actionMode==0){
+ 			//enter insert rules here
+		}
+		//end of setting rules for insert mode 
+		
+		//start of setting rules for update mode 
+		if($this->actionMode==1){
+			$this->form_validation->set_rules('id');
+		}
+		//end of setting rules for update mode 
+		
+		//start of setting rules for both insert and update mode 
+		$id = $this->input->post('id');
+		$this->form_validation->set_rules('Timezone', 'Field', 'trim|required|');
+		$this->form_validation->set_rules('country', 'Country', 'trim|required|');
+		//$this->form_validation->set_rules('TimezoneTypeId', 'Field', 'trim|required');
+		
+		//$this->form_validation->set_message('addEditUnique', '%s should contain unique value.');
+		 
+	  
+
+		//end of setting rules for both insert and update mode 
+	}
+	
+	
+	
+	
+	public function newTimezoneMst()
+	{
+		$this->initForm(0);
+		
+	}
+	
+	
+	public function editTimezoneMst($id=null) {
+		//$actionMode = 1;
+					
+		$this->initForm($id);
+	}
+	
+	
+	public function insert() {
+		$this->actionMode = 0;
+		
+		//start of form validation
+		$this->load->library('form_validation');
+		$this->setFormValidationRules();
+		//end of form validation
+
+		if ($this->form_validation->run() == FALSE)	{
+		$this->newTimeZoneMst();
+		} else {
+			$this->setFormControls();
+		
+			$this->session->set_flashdata("success", "Successfully Added Timezone");
+			redirect('address/timezoneMst', 'refresh');
+		}
+	}
+	
+	public function update() {
+		$this->actionMode = 1;
+		
+		//start of form validation
+	 	$this->load->library('form_validation');
+	 	$this->setFormValidationRules();
+		//end of form validation
+
+ 		if ($this->form_validation->run() == FALSE)	{
+	 		$this->editTimezoneMst($this->input->post('id'));
+	 	} else {
+			$this->setFormControls();
+			
+			$this->session->set_flashdata("success", "Successfully Updated TimeZone ID ".$this->gvn_timezoneId);
+			redirect('address/timezoneMst', 'refresh');
+	 	}		
+	}
+	
+	public function delete($gvn_timezoneId) {
+		$this->timezone_mst_m->delete($gvn_timezoneId);
+		$this->session->set_flashdata("success", "Successfully Deleted Timezone Master");
+		redirect('address/timezoneMst', 'refresh'');
+	}
+	public function __destruct(){
+		//destructor code here
+	}
+}
